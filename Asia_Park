@@ -1,0 +1,151 @@
+using System;
+namespace bai
+{
+    class Asia_Park
+    {
+        private string Name;
+        private float Price;
+        public void inputName(string a)
+        {
+            Name=a;
+        }
+        public void inputPrice(string a)
+        {
+            Price=float.Parse(a);
+        }
+        public virtual void Nhap(){}
+        public virtual void Pricee(){}
+    } 
+    class NguoiLon:Asia_Park
+    {
+        private string ID;
+        static string[,] s=new string[100,4];        
+        static int n,m;
+        public int DT;
+        public override void Nhap()
+        {
+            base.Nhap();
+            string input=File.ReadAllText(@"D:\demo C#\C#\baitapolop\dulieu4.txt");
+            int i=0,j=0;
+            foreach(var row in input.Split("\n"))
+            {
+                j=0;
+                foreach(var col in row.Trim().Split("|"))
+                {
+                    s[i,j]=col.Trim();
+                    j++;
+                }
+                i++;
+            }
+            n=i;
+            j=0;
+            for(i=0;i<n;i++)
+            {
+                if(s[i,1].Length==12)
+                {
+                    NguoiLon a=new NguoiLon();
+                    a.inputName(s[i,0]);
+                    a.ID=s[i,1];
+                    a.inputPrice("250000");
+                    s[i,2]="250000";
+                    j++;
+                }
+            }
+            m=j;
+        }
+        public override void Pricee()
+        {
+            base.Pricee();
+            DT=250000*m;
+            Console.WriteLine("{0}|{1}",m,n);
+            int i=0;
+            while(m>0 && i<n)
+            {
+                if(s[i,1].Length==12)
+                {
+                    Console.WriteLine("{0}|{1}|{2}|the do",s[i,0],s[i,1],s[i,2]);
+                    m=m-1;
+                }
+                i++;
+            }
+        }
+    }
+    class Treem:Asia_Park
+    {
+        private string chieucao;
+        static string[,] s=new string[100,4];        
+        static int n,m,k;
+        public int DT;
+        public override void Nhap()
+        {
+            base.Nhap();
+            string input=File.ReadAllText(@"D:\demo C#\C#\baitapolop\dulieu4.txt");
+            int i=0,j=0;
+            foreach(var row in input.Split("\n"))
+            {
+                j=0;
+                foreach(var col in row.Trim().Split("|"))
+                {
+                    s[i,j]=col.Trim();
+                    j++;
+                }
+                i++;
+            }
+            n=i;
+            k=j=0;
+            for(i=0;i<n;i++)
+            {
+                if(s[i,1].Length!=12)
+                {
+                    Treem a=new Treem();
+                    a.inputName(s[i,0]);
+                    a.chieucao=s[i,1];
+                    if (float.Parse(s[i,1])>1)
+                    {
+                        a.inputPrice("130000");
+                        s[i,2]="130000";
+                        k++;
+                    }
+                    else 
+                    {
+                        a.inputPrice("0");
+                        s[i,2]="0";
+                    }
+                    j++;
+                }
+            }
+            m=j;
+        }
+        public override void Pricee()
+        {
+            base.Pricee();
+            DT=130000*k;
+            int i=0;
+            Console.WriteLine("{0}|{1}|{2}",m,n,k);
+
+            while(m>0 && i<n)
+            {
+                if(s[i,1].Length!=12)
+                {
+                    Console.WriteLine("{0}|{1}|{2}|the xanh",s[i,0],s[i,1],s[i,2]);
+                    m=m-1;
+                }
+                i++;
+            }
+        }
+    }
+
+    class program
+    {
+        static void Main(string[] args)
+        {
+            NguoiLon a=new NguoiLon();
+            a.Nhap();
+            a.Pricee();
+            Treem b=new Treem();
+            b.Nhap();
+            b.Pricee();
+            Console.WriteLine("tong doanh thu la:{0}",a.DT+b.DT);
+        }
+    }
+}
